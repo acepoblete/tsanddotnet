@@ -1,0 +1,26 @@
+{
+  "name": "function-executor-client",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^5.3.0",
+    "vite": "^4.5.0"
+  },
+  "volta": {
+    "node": "22.21.1",
+    "yarn": "1.22.22"
+  }
+}
