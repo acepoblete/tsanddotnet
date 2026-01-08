@@ -10,24 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Database - SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(
-        builder.Configuration.GetConnectionString("DefaultConnection") 
+        builder.Configuration.GetConnectionString("DefaultConnection")
         ?? "Data Source=functionexecutor.db"));
 
 // Repositories
 builder.Services.AddScoped<ICostCodeRepository, CostCodeRepository>();
-builder.Services.AddScoped<IFunctionWrapperRepository, FunctionWrapperRepository>();
+builder.Services.AddScoped<IWorkbookRepository, WorkbookRepository>();
 
 // Services
-builder.Services.AddScoped<IScriptExecutor, JintScriptExecutor>();
-builder.Services.AddScoped<IFunctionWrapperService, FunctionWrapperService>();
-
-// Script executor options
-builder.Services.Configure<ScriptExecutorOptions>(options =>
-{
-    options.TimeoutMs = 1000;       // 1 second timeout
-    options.MaxStatements = 10000;  // Prevent infinite loops
-    options.MaxRecursionDepth = 100;
-});
+builder.Services.AddScoped<IExcelCalculationService, ExcelCalculationService>();
+builder.Services.AddScoped<IWorkbookService, WorkbookService>();
 
 // Controllers
 builder.Services.AddControllers();
@@ -49,9 +41,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new()
     {
-        Title = "Function Executor API",
+        Title = "Cost Code Workbook API",
         Version = "v1",
-        Description = "Execute JavaScript functions with cost code data"
+        Description = "Execute Excel-based calculations with cost code data"
     });
 });
 
@@ -73,6 +65,13 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+}
+
+// Ensure Templates directory exists
+var templatesPath = Path.Combine(app.Environment.ContentRootPath, "Templates");
+if (!Directory.Exists(templatesPath))
+{
+    Directory.CreateDirectory(templatesPath);
 }
 
 app.Run();

@@ -1,22 +1,28 @@
 namespace FunctionExecutor.Models.Dto;
 
 // Request DTOs
-public record CreateFunctionWrapperRequest(
+public record CreateWorkbookRequest(
     string Name,
     string? Description,
-    string TheFunction,
-    List<int> SelectedCostCodeIds  // Root IDs - descendants auto-loaded
+    string TemplateFilePath
 );
 
-public record UpdateFunctionWrapperRequest(
+public record UpdateWorkbookRequest(
     string Name,
     string? Description,
-    string TheFunction,
-    List<int> SelectedCostCodeIds
+    string TemplateFilePath
 );
 
-public record ExecuteRequest(
-    int FunctionWrapperId
+public record CostCodeUpdateInput(
+    string CmicCode,
+    decimal? Labor,
+    decimal? Qty,
+    decimal? Materials,
+    decimal? Other
+);
+
+public record CalculationRequest(
+    List<CostCodeUpdateInput> CostCodeInputs
 );
 
 // Response DTOs
@@ -24,23 +30,52 @@ public record CostCodeDto(
     int Id,
     int? ParentId,
     string Name,
-    decimal Value
+    string CmicCode,
+    decimal Labor,
+    decimal Qty,
+    decimal Materials,
+    decimal Other,
+    decimal TotalCost
 );
 
-public record FunctionWrapperDto(
+public record WorkbookCostCodeDto(
     int Id,
-    int Version,
+    int WorkbookId,
+    int CostCodeId,
+    string CmicCode,
+    string Name,
+    decimal Labor,
+    decimal Qty,
+    decimal Materials,
+    decimal Other,
+    decimal TotalCost
+);
+
+public record WorkbookDto(
+    int Id,
     string Name,
     string? Description,
-    string TheFunction,
-    List<CostCodeDto> CostCodes,
+    string TemplateFilePath,
+    int Version,
     DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime UpdatedAt,
+    List<WorkbookCostCodeDto> CostCodes
 );
 
-public record ExecutionResultDto(
+public record WorkbookSummaryDto(
+    int Id,
+    string Name,
+    string? Description,
+    string TemplateFilePath,
+    int Version,
+    DateTime CreatedAt,
+    DateTime UpdatedAt,
+    int CostCodeCount
+);
+
+public record CalculationResultDto(
     bool Success,
-    decimal? Result,
     string? Error,
-    long ExecutionTimeMs
+    long ExecutionTimeMs,
+    List<WorkbookCostCodeDto> UpdatedCostCodes
 );

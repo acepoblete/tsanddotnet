@@ -7,14 +7,21 @@
     <RootNamespace>FunctionExecutor</RootNamespace>
   </PropertyGroup>
 
+  <!-- Exclude the Tools subfolder which has its own project -->
+  <ItemGroup>
+    <Compile Remove="Tools/**" />
+    <Content Remove="Tools/**" />
+    <None Remove="Tools/**" />
+  </ItemGroup>
+
   <ItemGroup>
     <!-- Entity Framework Core for SQLite -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
-    
-    <!-- Jint - JavaScript interpreter for .NET -->
-    <PackageReference Include="Jint" Version="4.0.0" />
-    
+
+    <!-- ClosedXML - Excel manipulation -->
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+
     <!-- Swagger / OpenAPI -->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
   </ItemGroup>

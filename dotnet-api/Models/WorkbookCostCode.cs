@@ -1,11 +1,12 @@
 namespace FunctionExecutor.Models;
 
-public class CostCode
+public class WorkbookCostCode
 {
     public int Id { get; set; }
-    public int? ParentId { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public int WorkbookId { get; set; }
+    public int CostCodeId { get; set; }
     public string CmicCode { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public decimal Labor { get; set; }
     public decimal Qty { get; set; }
     public decimal Materials { get; set; }
@@ -13,7 +14,6 @@ public class CostCode
     public decimal TotalCost { get; set; }
 
     // Navigation properties
-    public CostCode? Parent { get; set; }
-    public ICollection<CostCode> Children { get; set; } = new List<CostCode>();
-    public ICollection<WorkbookCostCode> WorkbookCostCodes { get; set; } = new List<WorkbookCostCode>();
+    public Workbook Workbook { get; set; } = null!;
+    public CostCode CostCode { get; set; } = null!;
 }
