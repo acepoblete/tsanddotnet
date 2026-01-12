@@ -44,3 +44,58 @@ export interface UpdateFunctionWrapperRequest {
   theFunction: string;
   selectedCostCodeIds: number[];
 }
+
+// Workbook types
+export interface WorkbookCostCode {
+  id: number;
+  workbookId: number;
+  costCodeId: number;
+  cmicCode: string;
+  name: string;
+  labor: number;
+  qty: number;
+  materials: number;
+  other: number;
+  totalCost: number;
+}
+
+export interface Workbook {
+  id: number;
+  name: string;
+  description: string | null;
+  templateFilePath: string;
+  version: number;
+  createdAt: string;
+  updatedAt: string;
+  costCodes: WorkbookCostCode[];
+}
+
+export interface WorkbookSummary {
+  id: number;
+  name: string;
+  description: string | null;
+  templateFilePath: string;
+  version: number;
+  createdAt: string;
+  updatedAt: string;
+  costCodeCount: number;
+}
+
+export interface CostCodeUpdateInput {
+  cmicCode: string;
+  labor?: number;
+  qty?: number;
+  materials?: number;
+  other?: number;
+}
+
+export interface CalculationRequest {
+  costCodeInputs: CostCodeUpdateInput[];
+}
+
+export interface CalculationResult {
+  success: boolean;
+  error: string | null;
+  executionTimeMs: number;
+  updatedCostCodes: WorkbookCostCode[];
+}

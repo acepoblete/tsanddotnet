@@ -5,6 +5,11 @@ import {
   ValidateResult,
   CreateFunctionWrapperRequest,
   UpdateFunctionWrapperRequest,
+  Workbook,
+  WorkbookSummary,
+  CostCodeUpdateInput,
+  CalculationResult,
+  CalculationRequest,
 } from '../types';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -93,7 +98,7 @@ export const executionApi = {
     fetchApi<ExecutionResult>(`/execute/${functionWrapperId}`, {
       method: 'POST',
     }),
-  
+
   /**
    * Validate a function string without executing
    */
@@ -101,5 +106,27 @@ export const executionApi = {
     fetchApi<ValidateResult>('/execute/validate', {
       method: 'POST',
       body: JSON.stringify({ theFunction }),
+    }),
+};
+
+// ============================================================
+// Workbooks API
+// ============================================================
+
+export const workbooksApi = {
+  getAll: () => fetchApi<WorkbookSummary[]>('/workbooks'),
+
+  getById: (id: number) => fetchApi<Workbook>(`/workbooks/${id}`),
+
+  updateCostCodes: (id: number, updates: CostCodeUpdateInput[]) =>
+    fetchApi<Workbook>(`/workbooks/${id}/cost-codes`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    }),
+
+  calculate: (id: number, request?: CalculationRequest) =>
+    fetchApi<CalculationResult>(`/workbooks/${id}/calculate`, {
+      method: 'POST',
+      body: request ? JSON.stringify(request) : undefined,
     }),
 };

@@ -174,8 +174,9 @@ public class ExcelCalculationService : IExcelCalculationService
 
     private static decimal GetDecimalValue(IXLCell cell)
     {
-        // Use CachedValue after recalculation and try to convert to double
-        var cellValue = cell.CachedValue;
+        // Use Value property to get the calculated result after RecalculateAllFormulas()
+        // CachedValue returns the old cached value from the file, not the recalculated value
+        var cellValue = cell.Value;
         if (cellValue.TryConvert(out double value, CultureInfo.InvariantCulture))
         {
             return (decimal)value;
